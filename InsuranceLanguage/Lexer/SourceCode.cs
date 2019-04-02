@@ -9,74 +9,74 @@ namespace InsuranceLanguage
 {
     public sealed class SourceCode
     {
-        private Lazy<string[]> _lines;
-        private string _sourceCode;
+        Lazy<string[]> lines;
+        string sourceCode;
 
-        public string Contents => _sourceCode;
+        public string Contents => sourceCode;
 
-        public string[] Lines => _lines.Value;
+        public string[] Lines => lines.Value;
 
         public char this[int index]
         {
             get {
-                if (index > _sourceCode.Length - 1 || index < 0)
+                if (index > sourceCode.Length - 1 || index < 0)
                     return '\0';
-                return _sourceCode[index];
+                return sourceCode[index];
             }
         }
 
         private class Subset<T> : IEnumerable<T>
         {
-            private int _end;
-            private IEnumerable<T> _set;
+            int end;
+            IEnumerable<T> set;
 
-            private int _start;
+            int start;
 
             private struct SubsetEnumerator : IEnumerator<T>
             {
-                private bool _disposed;
-                private int _index;
-                private Subset<T> _subset;
+                bool disposed;
+                int index;
+                Subset<T> subset;
 
-                public T Current => _subset._set.ElementAt(_index);
+                public T Current => subset.set.ElementAt(index);
 
-                object IEnumerator.Current => _subset._set.ElementAt(_index);
+                object IEnumerator.Current => subset.set.ElementAt(index);
 
                 public SubsetEnumerator(Subset<T> subset)
                 {
-                    _disposed = false;
-                    _index = subset._start - 1;
-                    _subset = subset;
+                    disposed = false;
+                    index = subset.start - 1;
+                    this.subset = subset;
                 }
 
                 public void Dispose()
                 {
-                    _disposed = true;
+                    disposed = true;
                 } 
 
                 public bool MoveNext()
                 {
-                    if (_disposed)
+                    if (disposed)
                         throw new ObjectDisposedException("SubsetEnumerator");
-                    if (_index == _subset._end)
+                    if (index == subset.end)
                         return false;
-                    _index++;
+                    index++;
                     return true;
                 }
 
                 public void Reset()
                 {
-                    if (_disposed)
+                    if (disposed)
                         throw new ObjectDisposedException("SubsetEnumerator");
-                    _index = _subset._start;
+                    index = subset.start;
                 }
             }
 
             public Subset(IEnumerable<T> collection, int start, int end)
             {
-                _set = collection;
-                _start = start;
-                _end = end;
+                set = collection;
+                this.start = start;
+                this.end = end;
             }
 
             public IEnumerator<T> GetEnumerator()
@@ -92,8 +92,8 @@ namespace InsuranceLanguage
 
         public SourceCode(string sourceCode)
         {
-            _sourceCode = sourceCode;
-            _lines = new Lazy<string[]>(() => _sourceCode.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
+            this.sourceCode = sourceCode;
+            lines = new Lazy<string[]>(() => this.sourceCode.Split(new[] { Environment.NewLine }, StringSplitOptions.None));
         }
 
         public string GetLine(int line)
@@ -122,7 +122,7 @@ namespace InsuranceLanguage
         {
             int start = span.Start.Index;
             int length = span.Length;
-            return _sourceCode.Substring(start, length);
+            return sourceCode.Substring(start, length);
         }
 
         //Add later........................................................

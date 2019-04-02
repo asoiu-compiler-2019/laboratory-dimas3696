@@ -35,33 +35,33 @@ namespace InsuranceLanguage
 
     public class ErrorSink : IEnumerable<ErrorEntry>
     {
-        private List<ErrorEntry> _errors;
-        public IEnumerable<ErrorEntry> Errors => _errors.AsReadOnly();
-        public bool HasErrors => _errors.Count > 0;
+        List<ErrorEntry> errors;
+        public IEnumerable<ErrorEntry> Errors => errors.AsReadOnly();
+        public bool HasErrors => errors.Count > 0;
 
         public ErrorSink()
         {
-            _errors = new List<ErrorEntry>();
+            errors = new List<ErrorEntry>();
         }
 
         public void AddError(string mes, SourceCode sourceCode, Severity severity, SourceSpan sourceSpan)
         {
-            _errors.Add(new ErrorEntry(mes, sourceCode.GetLines(sourceSpan.Start.Line, sourceSpan.End.Line), severity, sourceSpan));
+            errors.Add(new ErrorEntry(mes, sourceCode.GetLines(sourceSpan.Start.Line, sourceSpan.End.Line), severity, sourceSpan));
         }
 
         public void Clear()
         {
-            _errors.Clear();
+            errors.Clear();
         }
 
         public IEnumerator<ErrorEntry> GetEnumerator()
         {
-            return _errors.GetEnumerator();
+            return errors.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _errors.GetEnumerator();
+            return errors.GetEnumerator();
         }
     }
 }

@@ -8,19 +8,19 @@ namespace InsuranceLanguage
 {
     public struct SourceLocation : IEquatable<SourceLocation>
     {
-        private readonly int _column;
-        private readonly int _line;
-        private readonly int _index;
+        readonly int column;
+        readonly int line;
+        readonly int index;
 
-        public int Column => _column;
-        public int Line => _line;
-        public int Index => _index;
+        public int Column => column;
+        public int Line => line;
+        public int Index => index;
 
         public SourceLocation(int index, int line, int column)
         {
-            _index = index;
-            _column = column;
-            _line = line;
+            this.index = index;
+            this.column = column;
+            this.line = line;
         }
 
         public static bool operator !=(SourceLocation l, SourceLocation r)

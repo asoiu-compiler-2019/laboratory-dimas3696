@@ -8,50 +8,50 @@ namespace InsuranceLanguage
 {
     public sealed class LexerAnaliser
     {
-        private static readonly string[] _Keywords = { "true", "false", "null", "str", "no_integer", "number", "delimetr", "op", "upper_symbol", "lower_symbol", "digital",
+        static readonly string[] _Keywords = { "true", "false", "null", "str", "no_integer", "number", "delimetr", "op", "upper_symbol", "lower_symbol", "digital",
                                                         "document_type", "variable", "client_code", "client_document", "boolean", "client_is_entity", "client_is_car_owner",
                                                         "client_is_beneficiary", "client", "company_code", "company_coefficients", "company", "engine_capacity", "car_type",
                                                         "car_registration", "car", "conditions", "document", "if", "else", "for"};
-        private StringBuilder _builder;
-        private int _column;
-        private ErrorSink _errorSink;
-        private int _index;
-        private int _line;
-        private SourceCode _sourceCode;
-        private SourceLocation _tokenStart;
+        StringBuilder builder;
+        int column;
+        ErrorSink errorSink;
+        int index;
+        int line;
+        SourceCode sourceCode;
+        SourceLocation tokenStart;
 
-        public ErrorSink ErrorSink => _errorSink;
-        private char _ch => _sourceCode[_index];
-        private char _last => Peek(-1);
-        private char _next => Peek(1);
+        public ErrorSink ErrorSink => errorSink;
+        char ch => sourceCode[index];
+        char last => Peek(-1);
+        char next => Peek(1);
 
         public LexerAnaliser(ErrorSink errorSink)
         {
-            _errorSink = errorSink;
-            _builder = new StringBuilder();
-            _sourceCode = null;
+            this.errorSink = errorSink;
+            builder = new StringBuilder();
+            sourceCode = null;
         }
 
         public LexerAnaliser() : this(new ErrorSink()) { }
 
         public LexerAnaliser(SourceCode sourceCode)
         {
-            _sourceCode = sourceCode;
-            _builder.Clear();
-            _line = 1;
-            _index = 0;
-            _column = 0;
+            this.sourceCode = sourceCode;
+            builder.Clear();
+            line = 1;
+            index = 0;
+            column = 0;
             
         }
 
         private Token CreateToken(TokenKind kind)
         {
-            string contents = _builder.ToString();
-            SourceLocation end = new SourceLocation(_index, _line, _column);
-            SourceLocation start = _tokenStart;
+            string contents = builder.ToString();
+            SourceLocation end = new SourceLocation(index, line, column);
+            SourceLocation start = tokenStart;
 
-            _tokenStart = end;
-            _builder.Clear();
+            tokenStart = end;
+            builder.Clear();
 
             return new Token(kind, contents, start, end);
         }
@@ -68,8 +68,8 @@ namespace InsuranceLanguage
 
         private void DoNewLine()
         {
-            _line++;
-            _column = 0;
+            line++;
+            column = 0;
         }
 
         private Token ScanNewLine()
@@ -90,15 +90,15 @@ namespace InsuranceLanguage
 
         private void AddError(string message, Severity severity)
         {
-            var span = new SourceSpan(_tokenStart, new SourceLocation(_index, _line, _column));
-            _errorSink.AddError(message, _sourceCode, severity, span);
+            var span = new SourceSpan(tokenStart, new SourceLocation(index, line, column));
+            errorSink.AddError(message, sourceCode, severity, span);
         }
 
         private Token ScanWord(Severity severity = Severity.Error, string message = "Unexpected token '{0}'")
         {
             while (!IsWhiteSpace() && !IsPuctuation() && !IsEOF())
                 Consume();
-            AddError(string.Format(message, _builder.ToString()), severity);
+            AddError(string.Format(message, builder.ToString()), severity);
             return CreateToken(TokenKind.Error);
             
         }
@@ -108,7 +108,7 @@ namespace InsuranceLanguage
             while (IsDigit())
                 Consume();
 
-            if (_ch == '.' || _ch == 'e' || _ch == 'f')
+            if (ch == '.' || ch == 'e' || ch == 'f')
                 return ScanFloat();
             if (!IsWhiteSpace() && !IsPuctuation() && !IsEOF())
                 return ScanWord();
@@ -118,17 +118,17 @@ namespace InsuranceLanguage
 
         private bool IsLetterOrDigit()
         {
-            return Char.IsLetterOrDigit(_ch);
+            return Char.IsLetterOrDigit(ch);
         }
 
         private bool IsIdentifire()
         {
-            return IsLetterOrDigit() || _ch == '_';
+            return IsLetterOrDigit() || ch == '_';
         }
 
         private bool IsKeyword()
         {
-            return _Keywords.Contains(_builder.ToString());
+            return _Keywords.Contains(builder.ToString());
         }
 
         private Token ScanIdentifire()
@@ -148,7 +148,7 @@ namespace InsuranceLanguage
         {
             Advance();
             
-            while(_ch != '"')
+            while(ch != '"')
             {
                 if (IsEOF())
                 {
@@ -165,7 +165,7 @@ namespace InsuranceLanguage
 
         private Token ScanPunctuation()
         {
-            switch (_ch)
+            switch (ch)
             {
                 case ';':
                     Consume();
@@ -193,7 +193,7 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.RightParenthesis);
                 case '>':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.GreaterThanOrEqual);
@@ -201,7 +201,7 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.GreaterThan);
                 case '<':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.LessThanOrEqual);
@@ -209,12 +209,12 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.LessThan);
                 case '+':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.PlusEqual);
                     }
-                    else if(_ch == '+')
+                    else if(ch == '+')
                     {
                         Consume();
                         return CreateToken(TokenKind.PlusPlus);
@@ -222,12 +222,12 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.Plus);
                 case '-':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.MinusEqual);
                     }
-                    else if(_ch == '-')
+                    else if(ch == '-')
                     {
                         Consume();
                         return CreateToken(TokenKind.MinusMinus);
@@ -235,7 +235,7 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.Minus);
                 case '=':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.Equal);
@@ -243,7 +243,7 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.Assignment);
                 case '!':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.NotEqual);
@@ -251,7 +251,7 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.Not);
                 case '*':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.MulEqual);
@@ -259,7 +259,7 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.Mul);
                 case '/':
                     Consume();
-                    if(_ch == '=')
+                    if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.DivEqual);
@@ -273,12 +273,12 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.Comma);
                 case '&':
                     Consume();
-                    if(_ch == '&')
+                    if(ch == '&')
                     {
                         Consume();
                         return CreateToken(TokenKind.BooleanAnd);
                     }
-                    else if(_ch == '=')
+                    else if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.BitwiseAndEqual);
@@ -286,12 +286,12 @@ namespace InsuranceLanguage
                     return CreateToken(TokenKind.BitwiseAnd);
                 case '|':
                     Consume();
-                    if (_ch == '|')
+                    if (ch == '|')
                     {
                         Consume();
                         return CreateToken(TokenKind.BooleanOr);
                     }
-                    else if(_ch == '=')
+                    else if(ch == '=')
                     {
                         Consume();
                         return CreateToken(TokenKind.BitwiseOrEqual);
@@ -312,11 +312,11 @@ namespace InsuranceLanguage
                 return ScanWhiteSpace();
             else if (IsDigit())
                 return ScanIntager();
-            else if (IsLetter() || _ch == '_')
+            else if (IsLetter() || ch == '_')
                 return ScanIdentifire();
-            else if (_ch == '"')
+            else if (ch == '"')
                 return ScanStringLiteral();
-            else if (_ch == '.' && Char.IsDigit(_next))
+            else if (ch == '.' && Char.IsDigit(next))
                 return ScanFloat();
             else if (IsPuctuation())
                 return ScanPunctuation();
@@ -326,11 +326,11 @@ namespace InsuranceLanguage
 
         public IEnumerable<Token> LexFile(SourceCode sourceCode)
         {
-            _sourceCode = sourceCode;
-            _builder.Clear();
-            _line = 1;
-            _index = 0;
-            _column = 0;
+            this.sourceCode = sourceCode;
+            builder.Clear();
+            line = 1;
+            index = 0;
+            column = 0;
             CreateToken(TokenKind.EndOfFile);
 
             return LexContents();
@@ -343,66 +343,66 @@ namespace InsuranceLanguage
 
         private char Peek(int ahead)
         {
-            return _sourceCode[_index + ahead];
+            return sourceCode[index + ahead];
         }
 
         public void Advance()
         {
-            _index++;
-            _column++;
+            index++;
+            column++;
         }
 
         public void Consume()
         {
-            _builder.Append(_ch);
+            builder.Append(ch);
             Advance();
         }
 
         private bool IsEOF()
         {
-            return _ch == '\0';
+            return ch == '\0';
         }
 
         private bool IsNewLine()
         {
-            return _ch == '\n';
+            return ch == '\n';
         }
 
         private bool IsDigit()
         {
-            return Char.IsDigit(_ch);
+            return Char.IsDigit(ch);
         }
 
         private bool IsLetter()
         {
-            return Char.IsLetter(_ch);
+            return Char.IsLetter(ch);
         }
 
         private bool IsWhiteSpace()
         {
-            return (char.IsWhiteSpace(_ch) || IsEOF()) && !IsNewLine();
+            return (char.IsWhiteSpace(ch) || IsEOF()) && !IsNewLine();
         }
 
         private bool IsPuctuation()
         {
-            return "<>{}()[]!%^&*+-=/.,?;:|".Contains(_ch);
+            return "<>{}()[]!%^&*+-=/.,?;:|".Contains(ch);
         }
 
         private Token ScanFloat()
         {
-            if(_ch == 'f')
+            if(ch == 'f')
             {
                 Advance();
-                if((!IsWhiteSpace() && !IsPuctuation() && !IsEOF()) || _ch == '.')
+                if((!IsWhiteSpace() && !IsPuctuation() && !IsEOF()) || ch == '.')
                 {
                     return ScanWord(message: "Remove 'f' in floating point number.");
                 }
                 return CreateToken(TokenKind.FloatLiteral);
             }
 
-            int preDotLength = _index - _tokenStart.Index;
+            int preDotLength = index - tokenStart.Index;
 
-            if(_ch == '.')
+            if(ch == '.')
             {
                 Consume();
             }
@@ -412,23 +412,23 @@ namespace InsuranceLanguage
                 Consume();
             }
 
-            if (_last == '.')
+            if (last == '.')
                 return ScanWord(message: "Must contains digits after '.'");
 
-            if(_ch == 'e')
+            if(ch == 'e')
             {
                 Consume();
                 if (preDotLength > 1)
                     return ScanWord(message: "First number must be less than 10.");
 
-                if (_ch == '+' || _ch == '-')
+                if (ch == '+' || ch == '-')
                     Consume();
 
                 while (IsDigit())
                     Consume();
             }
 
-            if (_ch == 'f')
+            if (ch == 'f')
                 Consume();
 
             if(!IsWhiteSpace() && !IsPuctuation() && !IsEOF())

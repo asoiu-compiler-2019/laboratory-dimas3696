@@ -8,18 +8,18 @@ namespace InsuranceLanguage
 {
     public struct SourceSpan : IEquatable<SourceSpan>
     {
-        private readonly SourceLocation _end;
-        private readonly SourceLocation _start;
+        readonly SourceLocation end;
+        readonly SourceLocation start;
 
-        public SourceLocation End => _end;
-        public SourceLocation Start => _start;
+        public SourceLocation End => end;
+        public SourceLocation Start => start;
 
-        public int Length => _end.Index - _start.Index;
+        public int Length => end.Index - start.Index;
 
         public SourceSpan(SourceLocation start, SourceLocation end)
         {
-            _end = end;
-            _start = start;
+            this.end = end;
+            this.start = start;
         }
 
         public static bool operator !=(SourceSpan l, SourceSpan r)
@@ -53,7 +53,7 @@ namespace InsuranceLanguage
 
         public override string ToString()
         {
-            return $"{_start.Line} {_start.Column} {Length}";
+            return $"{start.Line} {start.Column} {Length}";
         }
     }
 }
