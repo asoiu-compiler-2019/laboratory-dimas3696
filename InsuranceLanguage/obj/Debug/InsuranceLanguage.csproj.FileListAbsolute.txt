@@ -1,0 +1,7 @@
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\bin\Debug\InsuranceLanguage.exe.config
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\bin\Debug\InsuranceLanguage.exe
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\bin\Debug\InsuranceLanguage.pdb
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\obj\Debug\InsuranceLanguage.csprojAssemblyReference.cache
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\obj\Debug\InsuranceLanguage.csproj.CoreCompileInputs.cache
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\obj\Debug\InsuranceLanguage.exe
+E:\4course\Компиляторы\InsuranceLanguage\InsuranceLanguage\obj\Debug\InsuranceLanguage.pdb
