@@ -54,6 +54,9 @@
     <Compile Include="Lexer\SourceLocation.cs" />
     <Compile Include="Lexer\SourceSpan.cs" />
     <Compile Include="Lexer\Token.cs" />
+    <Compile Include="Syntax\Declaration\Declaration.cs" />
+    <Compile Include="Syntax\SourceDoc.cs" />
+    <Compile Include="Syntax\SyntaxNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -19,6 +19,9 @@ namespace InsuranceLanguage.Parser
         Token lastToken => Peek(-1);
         Token nextToken => Peek(1);
 
+        //Block for declaration
+        
+
         public SyntaxAnaliser(ErrorSink errorSink)
         {
             this.errorSink = errorSink;
@@ -113,7 +116,7 @@ namespace InsuranceLanguage.Parser
             return currentToken;
         }
 
-        private void CreateBlock(Action action, TokenKind breakTokenKind = TokenKind.Semicolon)
+        private void CreateStatement(Action action, TokenKind breakTokenKind = TokenKind.Semicolon)
         {
             try
             {
@@ -142,6 +145,20 @@ namespace InsuranceLanguage.Parser
                 else
                     TakeToken(breakTokenKind);
             }
+        }
+
+        private void ParserInit(SourceCode sourceCode, IEnumerable<Token> tokens, ParserOptions options)
+        {
+            this.sourceCode = sourceCode;
+            this.tokens = tokens;
+            this.options = options;
+            index = 0;
+        }
+
+        private void CreateBlock(Action action, TokenKind beginTokenKind = TokenKind.LeftBracket, TokenKind endTokenKind = TokenKind.RightBracket)
+        {
+            TakeToken(beginTokenKind);
+            CreateStatement(action, endTokenKind);
         }
 
     }

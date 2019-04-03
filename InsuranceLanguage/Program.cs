@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InsuranceLanguage.Parser;
 
 namespace InsuranceLanguage
 {
@@ -11,7 +12,7 @@ namespace InsuranceLanguage
         static void Main(string[] args)
         {
             LexerAnaliser lexer = new LexerAnaliser();
-            //GlassScriptParser parser = new GlassScriptParser(lexer.ErrorSink);
+            SyntaxAnaliser parser = new SyntaxAnaliser(lexer.ErrorSink);
 
             while (true)
             {
@@ -37,7 +38,7 @@ namespace InsuranceLanguage
                 }
                 else
                 {
-                    //var ast = parser.ParseFile(sourceCode, tokens, GlassScriptParserOptions.OptionalSemicolons);
+                    //var ast = parser.ParseFile(sourceCode, tokens, SyntaxAnalizer.OptionalSemicolons);
                     if (lexer.ErrorSink.Count() > 0)
                     {
                         foreach (var error in lexer.ErrorSink)
