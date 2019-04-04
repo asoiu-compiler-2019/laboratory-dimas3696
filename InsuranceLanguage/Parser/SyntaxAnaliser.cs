@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using InsuranceLanguage.Syntax.Declarations;
 
 namespace InsuranceLanguage.Parser
 {
@@ -17,10 +18,7 @@ namespace InsuranceLanguage.Parser
 
         Token currentToken => tokens.ElementAtOrDefault(index) != null ? tokens.ElementAtOrDefault(index) : tokens.Last();
         Token lastToken => Peek(-1);
-        Token nextToken => Peek(1);
-
-        //Block for declaration
-        
+        Token nextToken => Peek(1);        
 
         public SyntaxAnaliser(ErrorSink errorSink)
         {
@@ -159,6 +157,12 @@ namespace InsuranceLanguage.Parser
         {
             TakeToken(beginTokenKind);
             CreateStatement(action, endTokenKind);
+        }
+
+        private ClassDeclaration SyntaxAnalizeClassDeclaration()
+        {
+            List<FieldDeclaration> field = new List<FieldDeclaration>();
+            
         }
 
     }

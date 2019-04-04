@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InsuranceLanguage.Syntax.Declaration
+namespace InsuranceLanguage.Syntax.Declarations
 {
     public abstract class Declaration : SyntaxNode
     {

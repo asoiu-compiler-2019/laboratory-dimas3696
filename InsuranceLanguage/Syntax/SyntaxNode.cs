@@ -13,30 +13,21 @@ namespace InsuranceLanguage.Syntax
         BinaryExpression,
         UnaryExpression,
         IdentifierExpression,
-        ConstantExpression,
-        ReferenceExpression,
-        MethodCallExpression,
-        ParameterDeclaration,
         BlockStatement,
-        LambdaExpression,
-        NewExpression,
-        ArrayAccessExpression,
-        WhileStatement,
         IfStatement,
         ElseStatement,
-        SwitchStatement,
-        CaseStatement,
-        EmptyStatement,
-        BreakStatement,
-        ContinueStatement,
+        VoidStatement,
         ForStatement,
         VariableDeclaration,
-        ClassDeclaration,
+        ClassDeclaration,//
         FieldDeclaration,
-        MethodDeclaration,
-        ConstructorDeclaration,
-        PropertyDeclaration,
-        ReturnStatement,
+
+        //
+        ClientDeclaration,
+        CompanyDeclaration,
+        CarDeclaration,
+        ConditionsDeclaration,
+        
     }
 
     public enum SyntaxCatagory

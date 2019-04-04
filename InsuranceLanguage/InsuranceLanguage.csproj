@@ -54,9 +54,23 @@
     <Compile Include="Lexer\SourceLocation.cs" />
     <Compile Include="Lexer\SourceSpan.cs" />
     <Compile Include="Lexer\Token.cs" />
-    <Compile Include="Syntax\Declaration\Declaration.cs" />
+    <Compile Include="Syntax\Declarations\ClassDeclaration.cs" />
+    <Compile Include="Syntax\Declarations\ClientDeclaration.cs" />
+    <Compile Include="Syntax\Declarations\Declaration.cs" />
+    <Compile Include="Syntax\Declarations\FieldDeclaration.cs" />
+    <Compile Include="Syntax\Expressions\BinaryExpression.cs" />
+    <Compile Include="Syntax\Expressions\Expression.cs" />
+    <Compile Include="Syntax\Expressions\IdentifierExpression.cs" />
+    <Compile Include="Syntax\Expressions\UnaryExpression.cs" />
     <Compile Include="Syntax\SourceDoc.cs" />
+    <Compile Include="Syntax\Statements\BlockStatement.cs" />
+    <Compile Include="Syntax\Statements\ElseStatement.cs" />
+    <Compile Include="Syntax\Statements\ForStatement.cs" />
+    <Compile Include="Syntax\Statements\IfStatement.cs" />
+    <Compile Include="Syntax\Statements\Statement.cs" />
+    <Compile Include="Syntax\Statements\VoidStatement.cs" />
     <Compile Include="Syntax\SyntaxNode.cs" />
+    <Compile Include="Syntax\Declarations\VariableDeclaration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
